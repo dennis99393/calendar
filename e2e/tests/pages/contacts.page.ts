@@ -31,6 +31,10 @@ export class ContactsPage extends AdminIndexPage {
     return this.page.getByLabel('W9 On File');
   }
 
+  private get blacklistedCheckbox(): Locator {
+    return this.page.getByLabel('Blacklisted');
+  }
+
   get emailValidationError(): Locator {
     return this.page.locator('.form-group.has-error').filter({ has: this.emailInput });
   }
@@ -41,6 +45,11 @@ export class ContactsPage extends AdminIndexPage {
 
   async navigateViaUrl() {
     await this.page.goto('/contacts');
+  }
+
+  async openEditForAdUsername(adUsername: string) {
+    await this.navigateViaMenu();
+    await this.row(adUsername).getByRole('link', { name: 'Edit' }).click();
   }
 
   async openContactFromIndex(adUsername: string) {
@@ -86,6 +95,15 @@ export class ContactsPage extends AdminIndexPage {
       await this.w9OnFileCheckbox.check();
     } else {
       await this.w9OnFileCheckbox.uncheck();
+    }
+    await this.saveContact();
+  }
+
+  async setBlacklisted(checked: boolean) {
+    if (checked) {
+      await this.blacklistedCheckbox.check();
+    } else {
+      await this.blacklistedCheckbox.uncheck();
     }
     await this.saveContact();
   }

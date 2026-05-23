@@ -29,7 +29,7 @@ Spec naming: `tests/<area>.spec.ts` · Page objects under `tests/pages/`.
 
 
 ### 2.1b Blocked submission states (`Events/add.ctp`)
-- [ ] 2.1b Blocked submission states (`Events/add.ctp`)
+- [x] 2.1b Blocked submission states (`Events/add.ctp`)
 
 
 **Steps (blacklisted):**
@@ -56,7 +56,7 @@ Spec naming: `tests/<area>.spec.ts` · Page objects under `tests/pages/`.
 
 
 ### 2.1c Non-sponsored submit path (`__constructPostForMarshal`)
-- [ ] 2.1c Non-sponsored submit path (`__constructPostForMarshal`)
+- [x] 2.1c Non-sponsored submit path (`__constructPostForMarshal`)
 
 
 **Steps:**
@@ -71,7 +71,7 @@ Spec naming: `tests/<area>.spec.ts` · Page objects under `tests/pages/`.
 
 
 ### 2.2 Event creation — free class (baseline)
-- [ ] 2.2 Event creation — free class (baseline)
+- [x] 2.2 Event creation — free class (baseline)
 
 
 **Steps:**
@@ -100,7 +100,7 @@ Spec naming: `tests/<area>.spec.ts` · Page objects under `tests/pages/`.
 
 
 ### 2.3 Event validation (negative tests)
-- [ ] 2.3 Event validation (negative tests)
+- [x] 2.3 Event validation (negative tests)
 
 
 Repeat **Submit Event** with intentional errors:
@@ -262,7 +262,7 @@ Create separate events as `user1`; approve in §2.6. Each row is a fixture event
 
 
 ### 2.6 Event approval
-- [ ] 2.6 Event approval
+- [x] 2.6 Event approval
 
 
 **Steps (non-honorarium):**
@@ -329,7 +329,7 @@ Create separate events as `user1`; approve in §2.6. Each row is a fixture event
 
 
 ### 2.7 Event editing
-- [ ] 2.7 Event editing
+- [x] 2.7 Event editing
 
 
 **Steps (owner — limited):**
@@ -398,7 +398,7 @@ Create separate events as `user1`; approve in §2.6. Each row is a fixture event
 
 
 ### 2.8 Copy event
-- [ ] 2.8 Copy event
+- [x] 2.8 Copy event
 
 
 **Steps:**

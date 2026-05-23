@@ -99,4 +99,14 @@ export class HeaderComponent {
     await this.superCalendarAdminMenu.click();
     await this.root.getByRole('link', { name: 'Settings' }).click();
   }
+
+  async openHostingEvents() {
+    await this.myAccountMenu.click();
+    await this.root.getByRole('link', { name: 'Hosting Events' }).click();
+  }
+
+  async openAttendingEvents() {
+    await this.myAccountMenu.click();
+    await this.root.getByRole('link', { name: 'Attending Events' }).click();
+  }
 }

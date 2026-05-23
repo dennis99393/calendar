@@ -13,7 +13,7 @@ Spec naming: `tests/<area>.spec.ts` · Page objects under `tests/pages/`.
 
 
 ### 2.10 Free registration — auto confirm
-- [ ] 2.10 Free registration — auto confirm
+- [x] 2.10 Free registration — auto confirm
 
 
 **Steps:**
@@ -52,7 +52,7 @@ Spec naming: `tests/<area>.spec.ts` · Page objects under `tests/pages/`.
 
 
 ### 2.11 Registration — requires host approval
-- [ ] 2.11 Registration — requires host approval
+- [x] 2.11 Registration — requires host approval
 
 
 **Steps:**
@@ -101,7 +101,7 @@ Spec naming: `tests/<area>.spec.ts` · Page objects under `tests/pages/`.
 
 
 ### 2.12 Registration — members only
-- [ ] 2.12 Registration — members only
+- [x] 2.12 Registration — members only
 
 
 **Steps:**
@@ -152,7 +152,7 @@ Spec naming: `tests/<area>.spec.ts` · Page objects under `tests/pages/`.
 
 
 ### 2.14 Registration — advisories & age gate
-- [ ] 2.14 Registration — advisories & age gate
+- [x] 2.14 Registration — advisories & age gate
 
 
 **Steps:**
@@ -170,7 +170,7 @@ Spec naming: `tests/<area>.spec.ts` · Page objects under `tests/pages/`.
 
 
 ### 2.15 Guest registration & edit_key
-- [ ] 2.15 Guest registration & edit_key
+- [x] 2.15 Guest registration & edit_key
 
 
 **Steps:**
@@ -199,7 +199,7 @@ Spec naming: `tests/<area>.spec.ts` · Page objects under `tests/pages/`.
 
 
 ### 2.16 Registration — full event / duplicate email
-- [ ] 2.16 Registration — full event / duplicate email
+- [x] 2.16 Registration — full event / duplicate email
 
 
 **Steps (full — capped capacity):**
@@ -325,7 +325,7 @@ Complete §0.3 Braintree check first. All steps in this section require sandbox 
 
 
 ### 2.19 Cancel RSVP
-- [ ] 2.19 Cancel RSVP
+- [x] 2.19 Cancel RSVP
 
 
 **Steps:**

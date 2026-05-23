@@ -13,11 +13,11 @@ Bottom-up Playwright coverage mapped from all user-testable PHP under `src/`.
 | Setup | [Environment](environment.md) | — | — | — |
 | Layer 0 | [Pre-flight](layer-0-preflight.md) | 3 | 1 | 2 |
 | Layer 1 | [Reference data](layer-1-reference-data.md) | 12 | 12 | 0 |
-| Layer 2a | [Events & files](layer-2-events.md) | 12 | 1 | 11 |
-| Layer 2b | [Registration](layer-2-registration.md) | 10 | 0 | 10 |
-| Layer 2c | [Admin & host](layer-2-admin-host.md) | 10 | 0 | 10 |
+| Layer 2a | [Events & files](layer-2-events.md) | 12 | 8 | 4 |
+| Layer 2b | [Registration](layer-2-registration.md) | 10 | 7 | 3 |
+| Layer 2c | [Admin & host](layer-2-admin-host.md) | 10 | 5 | 5 |
 | Layer 3 | [Public calendar](layer-3-public.md) | 7 | 1 | 6 |
-| **Total** | | **54** | **15** | **39** |
+| **Total** | | **54** | **34** | **20** |
 
 ```bash
 grep -r '^- \[x\] ' e2e/plan/layer-*.md | wc -l
@@ -56,10 +56,11 @@ Appendices: [appendices/](appendices/)
 | `contacts.spec.ts` ✓ | §1.9 | layer-1 |
 | `logs.spec.ts` ✓ | §1.10 | layer-1 |
 | `authorization.spec.ts` ✓ | §1.11 | layer-1 |
-| `events-create.spec.ts` | §2.2 – §2.4 | layer-2-events |
-| `registration-free.spec.ts` | §2.10 – §2.17 | layer-2-registration |
+| `events-create.spec.ts` ✓ | §2.1b – §2.3, §2.1c | layer-2-events |
+| `events-admin.spec.ts` ✓ | §2.6 – §2.8 | layer-2-events |
+| `registration.spec.ts` ✓ | §2.10 – §2.16, §2.19 | layer-2-registration |
+| `host-admin.spec.ts` ✓ | §2.22 – §2.26 (partial) | layer-2-admin-host |
 | `registration-paid.spec.ts` | §2.18 | layer-2-registration |
-| `cron.spec.ts` | §2.26 | layer-2-admin-host |
 | `email.spec.ts` | §2.27 | layer-2-admin-host |
 | `sso.spec.ts` | §2.28 | layer-2-admin-host |
 | `smoke.spec.ts` | §3.7 | layer-3-public |

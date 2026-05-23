@@ -56,7 +56,7 @@ Spec naming: `tests/<area>.spec.ts` · Page objects under `tests/pages/`.
 
 
 ### 2.22 Cancel entire event
-- [ ] 2.22 Cancel entire event
+- [x] 2.22 Cancel entire event
 
 
 **Steps:**
@@ -93,7 +93,7 @@ Spec naming: `tests/<area>.spec.ts` · Page objects under `tests/pages/`.
 
 
 ### 2.23 Events archive & honorarium lists
-- [ ] 2.23 Events archive & honorarium lists
+- [x] 2.23 Events archive & honorarium lists
 
 
 **Steps:**
@@ -128,7 +128,7 @@ Spec naming: `tests/<area>.spec.ts` · Page objects under `tests/pages/`.
 
 
 ### 2.24 Financial export — `/events/export-honoraria`
-- [ ] 2.24 Financial export — `/events/export-honoraria`
+- [x] 2.24 Financial export — `/events/export-honoraria`
 
 
 **Steps:**
@@ -187,7 +187,7 @@ Spec naming: `tests/<area>.spec.ts` · Page objects under `tests/pages/`.
 
 
 ### 2.25 Standalone honoraria CRUD — `/honoraria`
-- [ ] 2.25 Standalone honoraria CRUD — `/honoraria`
+- [x] 2.25 Standalone honoraria CRUD — `/honoraria`
 
 
 No nav link. Requires **Calendar Admins** (`HonorariaController` inherits `AppController::isAuthorized` — not Honorarium Admins alone).
@@ -211,7 +211,7 @@ No nav link. Requires **Calendar Admins** (`HonorariaController` inherits `AppCo
 
 
 ### 2.26 Cron job — `/events/cron` `[INFRA: Time-manual]`
-- [ ] 2.26 Cron job — `/events/cron` `[INFRA: Time-manual]`
+- [x] 2.26 Cron job — `/events/cron` `[INFRA: Time-manual]`
 
 
 All cron tests require manual HTTP trigger and DB timestamp manipulation. Email sub-steps also need `[INFRA: SparkPost]` / `[INFRA: Email-dev]`.

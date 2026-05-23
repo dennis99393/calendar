@@ -33,6 +33,9 @@ services:
     extends:
         file: ./dms-ad-openldap/docker-compose.yml
         service: openldap
+    volumes:
+      - ./.docker/e2e-ldap/99.6-e2e-role-users.ldif:/container/service/slapd/assets/config/bootstrap/ldif/99.6-e2e-role-users.ldif
+      - ./.docker/e2e-ldap/99.7-e2e-role-users-groups.ldif:/container/service/slapd/assets/config/bootstrap/ldif/99.7-e2e-role-users-groups.ldif
     networks:
         main:
           aliases:

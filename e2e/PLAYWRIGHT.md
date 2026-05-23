@@ -77,7 +77,7 @@ Codegen and prototyping are fine — but **move every locator into a page object
 
 ### Test accounts
 
-Defined in `tests/data/test-users.ts` (sourced from `dms-ad-openldap/03-users.ldif`):
+Defined in `tests/data/test-users.ts` (base users from `dms-ad-openldap/03-users.ldif`; role-only users from `.docker/e2e-ldap/`):
 
 | Key | Username | Password | Notes |
 | --- | --- | --- | --- |

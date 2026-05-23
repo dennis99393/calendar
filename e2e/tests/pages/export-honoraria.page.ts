@@ -2,7 +2,7 @@ import type { Locator, Page } from '@playwright/test';
 
 import { HeaderComponent } from '../components/header.component';
 
-export class EventsIndexPage {
+export class ExportHonorariaPage {
   readonly header: HeaderComponent;
 
   constructor(private readonly page: Page) {
@@ -10,18 +10,14 @@ export class EventsIndexPage {
   }
 
   get heading(): Locator {
-    return this.page.getByRole('heading', { name: 'Upcoming Classes and Events' });
+    return this.page.getByRole('heading', { name: 'Export Honoraria' });
   }
 
-  private get calendarViewLink(): Locator {
-    return this.page.getByRole('link', { name: 'Calendar View' });
+  async navigateViaMenu() {
+    await this.header.openFinancialsLink('Export Honoraria');
   }
 
   async navigateViaUrl() {
-    await this.page.goto('/');
-  }
-
-  async openCalendarView() {
-    await this.calendarViewLink.click();
+    await this.page.goto('/events/export-honoraria');
   }
 }

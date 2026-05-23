@@ -8,7 +8,7 @@ test('member can log in with LDAP credentials', async ({ page }) => {
   const loginPage = new LoginPage(page);
   const eventsIndex = new EventsIndexPage(page);
 
-  await loginPage.goto();
+  await loginPage.navigateViaUrl();
   await expect(loginPage.heading).toBeVisible();
 
   await loginPage.loginAsMember(testUsers.member.username, testUsers.member.password);

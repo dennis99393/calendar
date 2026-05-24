@@ -9,6 +9,14 @@ export class EventsViewPage {
     return this.page.getByRole('heading', { level: 1 });
   }
 
+  get whenCell(): Locator {
+    return this.page.locator('tr').filter({ hasText: 'When' }).locator('td').nth(1);
+  }
+
+  get registrationSection(): Locator {
+    return this.page.locator('h3', { hasText: 'Registration' }).locator('..');
+  }
+
   get successMessage(): Locator {
     return this.page.getByRole('alert');
   }
@@ -45,6 +53,14 @@ export class EventsViewPage {
     return this.page.getByText('This event has been cancelled');
   }
 
+  get cancellationNotice(): Locator {
+    return this.page.getByText(/Cancellations for this event must be made before/);
+  }
+
+  get spacesAvailableText(): Locator {
+    return this.page.locator('.spaces_avaliable');
+  }
+
   async navigateViaUrl(eventId: number) {
     await this.page.goto(`/events/view/${eventId}`);
   }
@@ -55,6 +71,36 @@ export class EventsViewPage {
 
   async expectShortDescription(text: string) {
     await expect(this.page.getByText(text)).toBeVisible();
+  }
+
+  async expectWhenSectionContains(text: string | RegExp) {
+    await expect(this.whenCell).toContainText(text);
+  }
+
+  async expectWhenSectionLineCount(count: number) {
+    const html = await this.whenCell.innerHTML();
+    const lineBreaks = (html.match(/<br\s*\/?>/gi) ?? []).length;
+    expect(lineBreaks + 1).toBe(count);
+  }
+
+  async expectCancellationDeadline(text: string) {
+    await expect(this.cancellationNotice).toContainText(text);
+  }
+
+  async expectCost(text: string | RegExp) {
+    await expect(this.registrationSection).toContainText(text);
+  }
+
+  async expectRegisterButtonVisible() {
+    await expect(this.registerLink).toBeVisible();
+  }
+
+  async expectSpaceCountAvailable(open: number, total: number) {
+    await expect(this.spacesAvailableText).toContainText(`${open} spaces of ${total} available`);
+  }
+
+  async expectNoCapacityCountDisplayed() {
+    await expect(this.spacesAvailableText).toBeHidden();
   }
 
   async registerForEvent(): Promise<RegistrationsEventPage> {

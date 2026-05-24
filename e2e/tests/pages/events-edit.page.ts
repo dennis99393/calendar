@@ -66,4 +66,47 @@ export class EventsEditPage {
   async expectBlockedEditAlert() {
     await expect(this.page.getByText(/events can no longer be edited/)).toBeVisible();
   }
+
+  private facilitiesFieldset(): Locator {
+    return this.page.getByRole('group', { name: 'Facilities' });
+  }
+
+  private fixedDataAfterHeading(heading: string): Locator {
+    return this.facilitiesFieldset().locator('h5', { hasText: heading }).locator('..').locator('p.fixed-data');
+  }
+
+  async expectSetupMinutes(minutes: number) {
+    await expect(this.page.getByLabel('Setup Time')).toHaveValue(String(minutes));
+  }
+
+  async expectTeardownMinutes(minutes: number) {
+    await expect(this.page.getByLabel('Teardown Time')).toHaveValue(String(minutes));
+  }
+
+  async expectContinuedDateStart(sessionNumber: number, value: string | RegExp) {
+    const labels = ['', 'First', 'Second', 'Third', 'Fourth', 'Fifth'];
+    const label = `${labels[sessionNumber] ?? sessionNumber} Date Start`;
+    await expect(this.page.getByLabel(label)).toHaveValue(value);
+  }
+
+  private ordinal(sessionNumber: number): string {
+    const names = ['', 'First', 'Second', 'Third', 'Fourth', 'Fifth'];
+    return names[sessionNumber] ?? `${sessionNumber}th`;
+  }
+
+  async expectSetupBeginsAt(text: string) {
+    await expect(this.fixedDataAfterHeading('Setup Begins At')).toContainText(text);
+  }
+
+  async expectTeardownEndsAt(text: string) {
+    await expect(this.fixedDataAfterHeading('Teardown Ends At')).toContainText(text);
+  }
+
+  async expectContinuedSessionStart(sessionNumber: number, text: string | RegExp) {
+    await expect(this.fixedDataAfterHeading(`Date ${sessionNumber} Start`)).toContainText(text);
+  }
+
+  async expectContinuedSessionEnd(sessionNumber: number, text: string | RegExp) {
+    await expect(this.fixedDataAfterHeading(`Date ${sessionNumber} End`)).toContainText(text);
+  }
 }

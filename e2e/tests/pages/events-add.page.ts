@@ -1,6 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 
-import { eventStartEnd } from '../helpers/dates';
+import { eventStartEnd, scheduleSession, type ScheduleSession } from '../helpers/dates';
 import { HeaderComponent } from '../components/header.component';
 
 export type EventFormOptions = {
@@ -9,6 +9,7 @@ export type EventFormOptions = {
   longDescription?: string;
   startDaysFromNow?: number;
   durationHours?: number;
+  schedule?: ScheduleSession;
   room?: string;
   category?: string;
   tool?: string;
@@ -30,6 +31,11 @@ export type EventFormOptions = {
   eventbriteLink?: string;
   cost?: number;
   paidEventType?: 'paid' | 'eventbrite';
+  primaryType?: 'Class' | 'Event';
+  multipart?: boolean;
+  continuedSessions?: ScheduleSession[];
+  setupMinutes?: 0 | 15 | 30 | 45 | 60;
+  teardownMinutes?: 0 | 15 | 30 | 45 | 60;
 };
 
 export class EventsAddPage {
@@ -144,7 +150,7 @@ export class EventsAddPage {
   }
 
   private get paidEventTypeSelect(): Locator {
-    return this.page.getByLabel('Paid Event?');
+    return this.page.locator('select.payment-type-select');
   }
 
   private get costInput(): Locator {
@@ -161,6 +167,41 @@ export class EventsAddPage {
 
   private get notifyInstructorRegistrationsCheckbox(): Locator {
     return this.page.getByLabel('Notify Instructor Registrations');
+  }
+
+  private get multipartEventCheckbox(): Locator {
+    return this.page.getByLabel('Multipart Event');
+  }
+
+  private get setupTimeSelect(): Locator {
+    return this.page.getByLabel('Setup Time');
+  }
+
+  private get teardownTimeSelect(): Locator {
+    return this.page.getByLabel('Teardown Time');
+  }
+
+  private continuedStartInput(sessionNumber: number): Locator {
+    return this.page.getByLabel(`${this.ordinal(sessionNumber)} Date Start`);
+  }
+
+  private continuedEndInput(sessionNumber: number): Locator {
+    return this.page.getByLabel(`${this.ordinal(sessionNumber)} Date End`);
+  }
+
+  private ordinal(sessionNumber: number): string {
+    const names = ['', 'First', 'Second', 'Third', 'Fourth', 'Fifth'];
+    return names[sessionNumber] ?? `${sessionNumber}th`;
+  }
+
+  private setupLabel(minutes: number): string {
+    if (minutes === 0) {
+      return 'No setup time required';
+    }
+    if (minutes === 60) {
+      return '1 hour';
+    }
+    return `${minutes} minutes`;
   }
 
   get eventStartHelp(): Locator {
@@ -186,6 +227,10 @@ export class EventsAddPage {
 
   async selectClassType() {
     await this.page.getByRole('radio', { name: 'Class' }).check();
+  }
+
+  async selectPrimaryType(type: 'Class' | 'Event') {
+    await this.page.getByRole('radio', { name: type }).check();
   }
 
   async fillEventForm(options: EventFormOptions) {
@@ -216,16 +261,30 @@ export class EventsAddPage {
       eventbriteLink,
       cost,
       paidEventType,
+      primaryType,
+      multipart,
+      continuedSessions,
+      setupMinutes,
+      teardownMinutes,
+      schedule,
     } = options;
 
-    await this.selectClassType();
+    await this.selectPrimaryType(primaryType ?? 'Class');
     await this.titleInput.fill(title);
     await this.shortDescriptionInput.fill(shortDescription);
     await this.longDescriptionInput.fill(longDescription);
 
-    const { start, end } = eventStartEnd(startDaysFromNow, durationHours);
-    await this.eventStartInput.fill(start);
-    await this.eventEndInput.fill(end);
+    const primarySchedule =
+      schedule ??
+      ({
+        daysFromNow: startDaysFromNow,
+        startHour: 10,
+        durationHours,
+      } satisfies ScheduleSession);
+    const primaryDates = scheduleSession(primarySchedule);
+    await this.eventStartInput.fill(primaryDates.start);
+    await this.eventEndInput.fill(primaryDates.end);
+    await this.fillDates(primaryDates.start, primaryDates.end);
 
     const rooms = ['Common Area', 'Back Parking Lot', 'Offsite (See Event Description)'];
     const selectedRoom = rooms[new Date().getMilliseconds() % rooms.length];
@@ -243,17 +302,22 @@ export class EventsAddPage {
       if (eventbriteLink) {
         await this.eventbriteLinkInput.fill(eventbriteLink);
       }
+      await this.paidSpacesInput.fill(String(paidSpaces));
     } else if (paidEventType === 'paid' || cost !== undefined) {
       await this.paidEventTypeSelect.selectOption({ label: 'Paid (DMS)' });
+      await this.paidEventTypeSelect.dispatchEvent('change');
       if (cost !== undefined) {
+        await expect(this.costInput).toBeVisible();
         await this.costInput.fill(String(cost));
+        await this.costInput.dispatchEvent('change');
+      }
+      if (paidSpaces > 0) {
+        await expect(this.paidSpacesInput).toBeVisible();
+        await this.paidSpacesInput.fill(String(paidSpaces));
       }
     }
 
     await this.freeSpacesInput.fill(String(freeSpaces));
-    if (paidEventType === 'paid' || paidEventType === 'eventbrite' || cost !== undefined) {
-      await this.paidSpacesInput.fill(String(paidSpaces));
-    }
     await this.cancellationWindowInput.fill(String(cancellationDays));
 
     if (extendRegistration) {
@@ -292,6 +356,26 @@ export class EventsAddPage {
     }
     if (notifyInstructorRegistrations) {
       await this.notifyInstructorRegistrationsCheckbox.check();
+    }
+
+    if (setupMinutes !== undefined) {
+      await this.setupTimeSelect.selectOption({ label: this.setupLabel(setupMinutes) });
+    }
+    if (teardownMinutes !== undefined) {
+      await this.teardownTimeSelect.selectOption({ label: this.setupLabel(teardownMinutes) });
+    }
+
+    if (multipart) {
+      await this.multipartEventCheckbox.check();
+    }
+    if (continuedSessions?.length) {
+      for (let index = 0; index < continuedSessions.length; index += 1) {
+        const sessionNumber = index + 2;
+        const sessionDates = scheduleSession(continuedSessions[index]);
+        await this.continuedStartInput(sessionNumber).fill(sessionDates.start);
+        await this.continuedEndInput(sessionNumber).fill(sessionDates.end);
+        await this.fillContinuedDates(sessionNumber, sessionDates.start, sessionDates.end);
+      }
     }
   }
 
@@ -399,6 +483,22 @@ export class EventsAddPage {
         }
       },
       { start, end },
+    );
+  }
+
+  async fillContinuedDates(sessionNumber: number, start: string, end: string) {
+    await this.page.evaluate(
+      ({ sessionNumber, start, end }) => {
+        const startEl = document.querySelector(`#event-start-${sessionNumber}`) as HTMLInputElement | null;
+        const endEl = document.querySelector(`#event-end-${sessionNumber}`) as HTMLInputElement | null;
+        if (startEl) {
+          startEl.value = start;
+        }
+        if (endEl) {
+          endEl.value = end;
+        }
+      },
+      { sessionNumber, start, end },
     );
   }
 
